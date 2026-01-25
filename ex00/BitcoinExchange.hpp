@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 02:55:51 by lomont            #+#    #+#             */
-/*   Updated: 2026/01/20 04:59:49 by lomont           ###   ########.fr       */
+/*   Updated: 2026/01/25 15:47:25 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <sstream>
 #include <exception>
 #include <cstdlib>
+#include <ctime>
 
 #ifndef BITCOINEXCHANGE_HPP
 #define BITCOINEXCHANGE_HPP
@@ -58,18 +59,35 @@ class InputDatabase {
 		std::map<std::string, std::string> InputMap;
 		//Canonical form
 
-		InputDatabase( const char* str );
+		InputDatabase( const char* str, BitcoinDatabase& BitcoinDatabase );
 		InputDatabase( InputDatabase& src );
 		InputDatabase & operator=( InputDatabase& other );
 		~InputDatabase( void );
 
 		//member functions
-		void			CheckParsing( void );
+		void			CheckParsing( std::map<std::string, std::string> database );
 		void			createIndexDatabase( const std::string& str );
-		bool			checkDate( const std::string& str );
-		bool			checkSyntax( const std::string& str );
-		bool			checkValue( const std::string& str );
+		bool			checkDate( const std::string& str, size_t* index );
+		bool			checkSyntax( const std::string& str, size_t* index );
+		bool			checkValue( const std::string& str, size_t* index );
 
 };
+
+// class BitcoinExchange
+// {
+// 	private:
+// 		//Member variable
+
+// 		//Member function
+// 		void findDate(std::map<std::string, std::string> database, std::map<std::string, std::string> input);
+// 	public:
+// 		//Canonical form
+// 		BitcoinExchange( BitcoinDatabase& BitcoinDatabase, InputDatabase& InputDatabase );
+// 		BitcoinExchange( BitcoinExchange& src );
+// 		BitcoinExchange& operator=( BitcoinExchange & other);
+// 		~BitcoinExchange( void );
+// };
+
+bool	validateDate(const std::string& str, int d, int m, int y);
 
 #endif
