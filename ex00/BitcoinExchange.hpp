@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 02:55:51 by lomont            #+#    #+#             */
-/*   Updated: 2026/01/25 15:47:25 by lomont           ###   ########.fr       */
+/*   Updated: 2026/01/25 17:56:43 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,20 @@ class FileOpeningException : public std::exception
 		virtual ~FileOpeningException( void ) throw();
 };
 
+class FileHeaderException : public std::exception
+{
+	public:
+		const char* what( void ) const throw();
+		virtual ~FileHeaderException( void ) throw();
+};
+
 class BitcoinDatabase
 {
 	private:
 		//Member variable
 		std::ifstream			_file;
-		FileOpeningException	exception;
+		FileOpeningException	OpeningException;
+		FileHeaderException		HeaderException;
 
 		//Member function
 		void	openDatabaseFile( void );
@@ -50,44 +58,28 @@ class BitcoinDatabase
 		~BitcoinDatabase( void );
 };
 
-class InputDatabase {
+class BitcoinExchange {
 	private:
 		std::ifstream			_file;
-		FileOpeningException	exception;
+		FileOpeningException	OpeningException;
+		FileHeaderException		HeaderException;
 		void OpenInputFile(const char* filename);
 	public:
-		std::map<std::string, std::string> InputMap;
 		//Canonical form
 
-		InputDatabase( const char* str, BitcoinDatabase& BitcoinDatabase );
-		InputDatabase( InputDatabase& src );
-		InputDatabase & operator=( InputDatabase& other );
-		~InputDatabase( void );
+		BitcoinExchange( const char* str, BitcoinDatabase& BitcoinDatabase );
+		BitcoinExchange( BitcoinExchange& src );
+		BitcoinExchange & operator=( BitcoinExchange& other );
+		~BitcoinExchange( void );
 
 		//member functions
+
+		void			printExchange(const std::string& str, std::map<std::string, std::string> database ) const;
 		void			CheckParsing( std::map<std::string, std::string> database );
-		void			createIndexDatabase( const std::string& str );
 		bool			checkDate( const std::string& str, size_t* index );
 		bool			checkSyntax( const std::string& str, size_t* index );
 		bool			checkValue( const std::string& str, size_t* index );
-
+		static bool		validateDate(const std::string& str, int d, int m, int y);
 };
-
-// class BitcoinExchange
-// {
-// 	private:
-// 		//Member variable
-
-// 		//Member function
-// 		void findDate(std::map<std::string, std::string> database, std::map<std::string, std::string> input);
-// 	public:
-// 		//Canonical form
-// 		BitcoinExchange( BitcoinDatabase& BitcoinDatabase, InputDatabase& InputDatabase );
-// 		BitcoinExchange( BitcoinExchange& src );
-// 		BitcoinExchange& operator=( BitcoinExchange & other);
-// 		~BitcoinExchange( void );
-// };
-
-bool	validateDate(const std::string& str, int d, int m, int y);
 
 #endif
