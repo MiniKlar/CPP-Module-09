@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 00:13:42 by lomont            #+#    #+#             */
-/*   Updated: 2026/02/01 23:06:26 by lomont           ###   ########.fr       */
+/*   Updated: 2026/02/02 23:17:37 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,4 +150,5 @@ void	RPN::execution( void ) {
 		j++;
 	}
 	std::cout << this->s.top() << std::endl;
+	this->s.pop();
 }
