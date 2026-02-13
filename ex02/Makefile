@@ -6,14 +6,14 @@
 #    By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:54:30 by lomont            #+#    #+#              #
-#    Updated: 2026/02/11 17:16:12 by lomont           ###   ########.fr        #
+#    Updated: 2026/02/11 22:25:34 by lomont           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = PmergeMe
 
 C++ = g++-15
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g
 
 RM = rm -f
 
