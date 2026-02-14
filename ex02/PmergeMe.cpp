@@ -6,19 +6,18 @@
 /*   By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:57:25 by lomont            #+#    #+#             */
-/*   Updated: 2026/02/13 03:28:55 by lomont           ###   ########.fr       */
+/*   Updated: 2026/02/14 05:31:42 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-std::deque<int> t;
-int i = 0;
-
 PmergeMe::PmergeMe( int argc, char** argv ) : sav(-1) {
 	std::cout << "Default PmergeMe constructor called" << std::endl;
 	for (int i = 1; i < argc; i++)
 		addNumber(&this->list, parseNumbers(argv[i]));
+	if (gettimeofday(&_time, NULL) == -1)
+		exit (1);
 	return ;
 }
 
@@ -75,16 +74,31 @@ void	PmergeMe::printResult( void ) {
 	std::cout << "Voici la valeur save = " << this->sav << std::endl;
 }
 
+std::deque<int>& PmergeMe::getList( void ) {
+	return (this->list);
+}
+
+double	PmergeMe::get_time( void ) {
+	return (static_cast<double>(this->_time.tv_sec) * 1000000.0 + this->_time.tv_usec);
+}
+
+void PmergeMe::set_time( void ) {
+	gettimeofday(&_time, NULL);
+	return ;
+}
+
+bool	specialSort(const std::pair<int, int>& i, const std::pair<int, int>& j) {
+	return (i.first < j.first);
+}
+
 std::deque<int> PmergeMe::fordJohnson(std::deque<int> container) {
-	int								i;
 	int								leftover;
 	std::deque<int> 				winner;
-	std::deque<std::pair<int, int>>	pairs;
+	std::deque<std::pair<int, int> >	pairs;
 	//cas d'arrêt
 	if (container.size() <= 1)
 		return std::deque<int>(container);
 
-	i = 0;
 	leftover = -1;
 	//pour chaque élément de la liste d'entrée => créer une paire selon la comparaison
 	std::deque<int>::iterator it = container.begin();
@@ -108,18 +122,18 @@ std::deque<int> PmergeMe::fordJohnson(std::deque<int> container) {
 			pairs.push_back(std::make_pair(a, b));
 		}
 
-		winner.push_back(pairs[i].first);
-		i++;
+		winner.push_back(pairs.back().first);
 	}
 	std::deque<int>result = fordJohnson(winner);
-	binary_search(result, pairs, Jacobsthal(i++), Jacobsthal(i));
-	std::deque<int>::iterator iteratorBi = std::lower_bound(result.begin(), result.end(), leftover);
-	result.insert(iteratorBi, leftover);
+	std::sort(pairs.begin(), pairs.end(), specialSort);
+	result.push_front(pairs[0].second);
+	for (int k = 3; Jacobsthal(k - 1) <= static_cast<int>(pairs.size()); k++)
+		binary_search(result, pairs, Jacobsthal(k), Jacobsthal(k - 1));
+	if (leftover != -1) {
+		std::deque<int>::iterator iteratorBi = std::lower_bound(result.begin(), result.end(), leftover);
+		result.insert(iteratorBi, leftover);
+	}
 	return (result);
-}
-
-std::deque<int>& PmergeMe::getList( void ) {
-	return (this->list);
 }
 
 int		PmergeMe::Jacobsthal(int n) {
@@ -133,22 +147,12 @@ int		PmergeMe::Jacobsthal(int n) {
 
 void	PmergeMe::binary_search(std::deque<int>& S, std::deque<std::pair<int, int> >& pairs, int Jacobsthal, int prevJacobsthal) {
 	for (int i = std::min(Jacobsthal - 1, static_cast<int>(pairs.size() - 1)); prevJacobsthal - 1 < i; i--) {
-		binary_insert(S, pairs, pairs[i].first);
+		binary_insert(S, pairs[i].first, pairs[i].second);
 	}
-		//donc on va chercher l'extrémité de 1 par exemple donc on sait que a1 > b1, on rajoute b1 au début (on cherche la valeur assigné à a1 (gagnant, perdant)). Si c'était 3, on chercherai a3 > b3 et la pair et on place b3 entre [b1, a1, a2] donc [b1, a1, a2]
-			//on met ça dans la fonction qui va faire une comparaison dans [b1, a1, a2] pour placer b3. et ainsi de suite
 }
 
-void	binary_insert(std::deque<int>& S, std::deque<std::pair<int, int> >& pairs, int Ai) {
+void	PmergeMe::binary_insert(std::deque<int>& S, int Ai, int Bi) {
 	std::deque<int>::iterator it = std::lower_bound(S.begin(), S.end(), Ai);
-	int Bi;
-	size_t i = 0;
-	for (std::deque<std::pair<int, int> >::iterator iterator = pairs.begin(); iterator != pairs.end(); iterator++) {
-		if (iterator->first == *it) {
-			Bi = iterator->second;
-			break;
-		}
-	}
 	std::deque<int>::iterator iteratorBi = std::lower_bound(S.begin(), it, Bi);
 	S.insert(iteratorBi, Bi);
 }
