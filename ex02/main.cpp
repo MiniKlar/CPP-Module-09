@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:51:22 by lomont            #+#    #+#             */
-/*   Updated: 2026/02/14 05:26:44 by lomont           ###   ########.fr       */
+/*   Updated: 2026/02/14 05:32:59 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	main( int argc, char** argv) {
 			std::cout << *it << " ";
 		}
 		std::cout << std::endl;
-		bool sorted = std::is_sorted(result.begin(), result.end());
-		std::cout << sorted;
+		// bool sorted = std::is_sorted(result.begin(), result.end());
+		// std::cout << sorted;
 	}
 	else
 		return (1);
