@@ -6,28 +6,21 @@
 /*   By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:51:22 by lomont            #+#    #+#             */
-/*   Updated: 2026/02/14 05:32:59 by lomont           ###   ########.fr       */
+/*   Updated: 2026/02/15 03:20:10 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
 int	main( int argc, char** argv) {
-	if (argc >= 2) {
+	if (argc >= 3) {
 		PmergeMe a(argc, argv);
-		std::deque<int> result = a.fordJohnson(a.getList());
-		double start = a.get_time();
-		a.set_time();
-		std::cout << std::fixed << std::setprecision(5) << "Time to process a range of " << argc - 1 << " elements with std::deque : " << a.get_time() - start << " us" << std::endl;
-		std::cout << "Sorted: ";
-		for (std::deque<int>::iterator it = result.begin(); it != result.end(); it++) {
-			std::cout << *it << " ";
-		}
-		std::cout << std::endl;
-		// bool sorted = std::is_sorted(result.begin(), result.end());
-		// std::cout << sorted;
+		ft_performCalculationAndPrintIt(a, argv, argc - 1, true);
+		ft_performCalculationAndPrintIt(a, argv, argc - 1, false);
 	}
-	else
+	else {
+		std::cerr << "Please use './PmergeMe args1 args2 ..." << std::endl;
 		return (1);
+	}
 	return (0);
 }
