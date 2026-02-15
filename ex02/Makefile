@@ -6,19 +6,20 @@
 #    By: lomont <lomont@student.42lehavre.fr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:54:30 by lomont            #+#    #+#              #
-#    Updated: 2026/02/14 05:32:39 by lomont           ###   ########.fr        #
+#    Updated: 2026/02/15 02:44:49 by lomont           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = PmergeMe
 
 C++ = g++-15
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 
 RM = rm -f
 
 SRC = ./main.cpp \
 		./PmergeMe.cpp \
+		./utils.cpp \
 
 OBJ = $(SRC:.cpp=.o)
 
